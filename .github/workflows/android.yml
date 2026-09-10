@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup JDK 17
@@ -20,16 +20,24 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Gradle 8.9
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
-      - name: Build APK
+      - name: Check Android project
+        run: |
+          echo "Project root:"
+          pwd
+          echo ""
+          echo "Files:"
+          find . -maxdepth 3 -type f | sort
+
+      - name: Build Debug APK
         run: gradle assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: KakaTelegram-debug
+          name: TeleRojgar-debug
           path: app/build/outputs/apk/debug/app-debug.apk
